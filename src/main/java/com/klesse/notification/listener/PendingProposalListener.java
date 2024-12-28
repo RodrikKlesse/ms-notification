@@ -3,9 +3,11 @@ package com.klesse.notification.listener;
 import com.klesse.notification.constants.Message;
 import com.klesse.notification.domain.Proposal;
 import com.klesse.notification.service.NotificationSNSService;
+import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+@AllArgsConstructor
 @Component
 public class PendingProposalListener {
 
