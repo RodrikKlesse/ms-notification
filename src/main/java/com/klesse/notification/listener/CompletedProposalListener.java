@@ -9,13 +9,20 @@ import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
 @Component
-public class PendingProposalListener {
+public class CompletedProposalListener {
 
     private NotificationSNSService notificationSNSService;
 
-    @RabbitListener(queues = "${rabbitmq.queue.pending.proposal.notification}")
-    public void pendingProposal(Proposal proposal) {
-        String message = String.format(Message.PROPOSAL_ANALYSIS, proposal.getUsers().getName());
+    @RabbitListener(queues = "${rabbitmq.queue.completed.proposal.notification}")
+    public void completedProposal(Proposal proposal) {
+        String message;
+
+        if(proposal.getStatus()) {
+             message = String.format(Message.COMPLETED_PROPOSAL_ANALYSIS_APPROVED, proposal.getUsers().getName());
+        } else {
+            message = String.format(Message.COMPLETED_PROPOSAL_ANALYSIS_DENIED, proposal.getUsers().getName(), proposal.getDescription());
+        }
+
         notificationSNSService.notifier(proposal.getUsers().getPhoneNumber(), message);
     }
 }
