@@ -20,6 +20,9 @@ public class AWSSNSConfig {
     @Value("${aws.secretKey}")
     private String secretKey;
 
+    @Value("${aws.region:us-east-1}")
+    private String region;
+
     @Bean
     public AWSCredentials awsCredentials() {
         return new BasicAWSCredentials(accessKey, secretKey);
@@ -29,7 +32,7 @@ public class AWSSNSConfig {
     public AmazonSNS amazonSNS() {
         return AmazonSNSClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials()))
-                .withRegion(Regions.US_EAST_1)
+                .withRegion(Regions.fromName(region))
                 .build();
     }
 }
